@@ -5,6 +5,7 @@ function startGame() {
     // Store canvas element and whatever the hell ctx is
     game = document.getElementById("platformer");
     ctx = game.getContext("2d");
+    david = document.getElementById("david");
     
     // I don't need to explain this -- runs fram every 20 ms
     doFrame();
@@ -16,12 +17,13 @@ function startGame() {
     upKeyDown = false;
     touching = false;
     onGround = false;
-    level = 1
+    level = 1;
+    facing = 2;
     
     
     // Declare position variables.
     
-    player1 = {x:50, y:602, width:18, height:18, xvel:0, yvel:0, upFrames:0};
+    player1 = {x:50, y:602, width:20, height:20, xvel:0, yvel:0, upFrames:0};
     spawnx=10;
     spawny=592;
     
@@ -29,6 +31,7 @@ function startGame() {
     
     ctx.fillStyle = "red";
     ctx.fillRect(player1.x, player1.y, player1.width, player1.height);
+    ctx.drawImage(david, Math.round(player1.x), Math.round(player1.y), player1.width, player1.height);
     
     // Give focus to the canvas so inputs work.
     game.focus();
@@ -116,7 +119,13 @@ function doFrame(){
         // Renders rectangle
         
         ctx.fillStyle = "red";
-        ctx.fillRect(Math.round(player1.x), Math.round(player1.y), player1.width, player1.height);
+        
+        if (facing==1){
+        ctx.drawImage(david2, Math.round(player1.x), Math.round(player1.y), player1.width, player1.height);
+        }
+        if (facing==2){
+        ctx.drawImage(david, Math.round(player1.x), Math.round(player1.y), player1.width, player1.height);
+        }
         
         if (player1.y>720 || deathCollision()){
             die();
@@ -224,9 +233,11 @@ function deathCollision(){
 function doKeyDown(e) {
     if (e.keyCode==37 ) {
         leftKeyDown = true;
+        facing = 1;
     }
     if (e.keyCode==39 ) {
         rightKeyDown = true;
+        facing = 2;
     }
     if (e.keyCode==38 ) {
         upKeyDown = true;
